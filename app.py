@@ -273,16 +273,16 @@ st.markdown(f"""
 <div style="background:white; border:2px dashed {COLOR_ACCENT}; border-radius:10px;
             padding:32px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <div style="font-size:2.2rem; margin-bottom:12px;">📅</div>
-    <p style="color:{COLOR_PRIMARY}; font-size:1.1rem; font-weight:700; margin:0 0 8px 0;">
+    <p style="color:{COLOR_PRIMARY} !important; font-size:1.1rem; font-weight:700; margin:0 0 8px 0;">
         Diagrama de Gantt no disponible
     </p>
-    <p style="color:#555; font-size:0.95rem; margin:0 0 20px 0; max-width:500px; margin-left:auto; margin-right:auto;">
+    <p style="color:#777 !important; font-size:0.95rem; margin:0 0 20px 0; max-width:500px; margin-left:auto; margin-right:auto;">
         Para activar el seguimiento por Gantt se requiere definir, por cada tema,
         una <strong>fecha de inicio</strong> y una <strong>fecha límite de resolución</strong>.
         Estas fechas aún no están registradas — se recomienda definirlas a la brevedad
         como parte del control de avance.
     </p>
-    <div style="display:inline-block; background:{COLOR_PRIMARY}; color:white;
+    <div style="display:inline-block; background:{COLOR_PRIMARY}; color:white !important;
                 padding:8px 24px; border-radius:6px; font-weight:600; font-size:0.9rem;">
         ⚠️ Acción requerida: solicitar fechas a los responsables
     </div>
