@@ -16,9 +16,11 @@ st.markdown(f"""
         color: {COLOR_PRIMARY} !important;
     }}
 
-    /* Todo el texto del cuerpo principal */
-    .stApp p, .stApp span, .stApp div, .stApp label,
-    .stApp li, .stApp td, .stApp th {{
+    /* Texto de Streamlit — solo componentes propios, no HTML inyectado */
+    .stMarkdown p, .stMarkdown li,
+    [data-testid="stText"],
+    [data-testid="stWidgetLabel"] label,
+    .stSelectbox label, .stMultiSelect label {{
         color: {COLOR_PRIMARY} !important;
     }}
 
@@ -283,8 +285,8 @@ st.markdown(f"""
         como parte del control de avance.
     </p>
     <div style="display:inline-block; background:{COLOR_PRIMARY}; color:white !important;
-                padding:8px 24px; border-radius:6px; font-weight:600; font-size:0.9rem;">
-        ⚠️ Acción requerida: solicitar fechas a los responsables
+                padding:8px 24px; border-radius:6px; font-weight:600 !important; font-size:0.9rem;">
+        <span style="color:white !important;">⚠️ Acción requerida: solicitar fechas a los responsables</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -295,7 +297,7 @@ st.subheader("Detalle de temas")
 COLS = ["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción"]
 
 header_cells = "".join(
-    f'<th style="padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap;">{c}</th>'
+    f'<th style="padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap; color:white !important;">{c}</th>'
     for c in COLS
 )
 
