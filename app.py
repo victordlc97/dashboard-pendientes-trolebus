@@ -230,22 +230,47 @@ st.plotly_chart(fig_comp, use_container_width=True)
 st.divider()
 st.subheader("Detalle de temas")
 
+COLS = ["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción"]
 
-def estado_badge(estado: str) -> str:
-    color = ESTADO_COLOR.get(estado, "#ccc")
-    text_color = COLOR_PRIMARY if estado == "En curso" else "white"
-    return f"background-color: {color}; color: {text_color}; font-weight: 600;"
-
-
-styled = df_f.style.map(
-    lambda v: estado_badge(v) if v in ESTADO_COLOR else "", subset=["Estado"]
+header_cells = "".join(
+    f'<th style="padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap;">{c}</th>'
+    for c in COLS
 )
-st.dataframe(
-    styled,
-    use_container_width=True,
-    hide_index=True,
-    wrap_text=True,
-    column_config={
-        "Descripción": st.column_config.TextColumn(width="large"),
-    },
-)
+
+rows_html = ""
+for i, (_, row) in enumerate(df_f[COLS].iterrows()):
+    bg = "white" if i % 2 == 0 else "#f4f6f9"
+    cells = ""
+    for col in COLS:
+        val = str(row[col]) if row[col] else ""
+        if col == "Estado":
+            color = ESTADO_COLOR.get(val, "#ccc")
+            text_color = COLOR_PRIMARY if val == "En curso" else "white"
+            cells += (
+                f'<td style="padding:10px 14px; white-space:nowrap;">'
+                f'<span style="background:{color}; color:{text_color}; padding:3px 10px; '
+                f'border-radius:4px; font-weight:600;">{val}</span></td>'
+            )
+        elif col == "Descripción":
+            cells += (
+                f'<td style="padding:10px 14px; min-width:280px; '
+                f'word-wrap:break-word; white-space:normal;">{val}</td>'
+            )
+        else:
+            cells += f'<td style="padding:10px 14px; white-space:nowrap;">{val}</td>'
+    rows_html += f'<tr style="background:{bg}; border-bottom:1px solid #e8edf5;">{cells}</tr>'
+
+st.markdown(f"""
+<div style="overflow-x:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+<table style="width:100%; border-collapse:collapse; font-size:0.88rem; color:{COLOR_PRIMARY};">
+    <thead>
+        <tr style="background:{COLOR_PRIMARY}; color:white;">
+            {header_cells}
+        </tr>
+    </thead>
+    <tbody>
+        {rows_html}
+    </tbody>
+</table>
+</div>
+""", unsafe_allow_html=True)
