@@ -240,4 +240,12 @@ def estado_badge(estado: str) -> str:
 styled = df_f.style.map(
     lambda v: estado_badge(v) if v in ESTADO_COLOR else "", subset=["Estado"]
 )
-st.dataframe(styled, use_container_width=True, hide_index=True)
+st.dataframe(
+    styled,
+    use_container_width=True,
+    hide_index=True,
+    wrap_text=True,
+    column_config={
+        "Descripción": st.column_config.TextColumn(width="large"),
+    },
+)
