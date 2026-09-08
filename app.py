@@ -109,6 +109,21 @@ df_f = df[
 
 st.title("🚎 Pendientes Contratos Trolebús")
 st.caption(f"Corte: {CORTE}  ·  Contraparte: {CONTRAPARTE}")
+
+st.markdown(f"""
+<div style="display:flex; gap:16px; margin: 8px 0 4px 0;">
+    <div style="background:white; border-left:5px solid {COLOR_PRIMARY}; border-radius:6px;
+                padding:10px 18px; box-shadow:0 2px 6px rgba(0,0,0,0.07); flex:1;">
+        <span style="color:{COLOR_ACCENT}; font-weight:700; font-size:0.85rem;">CONTRATO 1</span><br>
+        <span style="color:{COLOR_PRIMARY}; font-weight:600; font-size:0.9rem;">LP-SITRAMYTEM-DPPC-PAD-02-2023</span>
+    </div>
+    <div style="background:white; border-left:5px solid {COLOR_ACCENT}; border-radius:6px;
+                padding:10px 18px; box-shadow:0 2px 6px rgba(0,0,0,0.07); flex:1;">
+        <span style="color:{COLOR_PRIMARY}; font-weight:700; font-size:0.85rem;">CONTRATO 2</span><br>
+        <span style="color:{COLOR_PRIMARY}; font-weight:600; font-size:0.9rem;">LP-SITRAMYTEM-DPPC-PAD-06-2024</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 st.divider()
 
 total     = len(df_f)
@@ -222,7 +237,7 @@ def estado_badge(estado: str) -> str:
     return f"background-color: {color}; color: {text_color}; font-weight: 600;"
 
 
-styled = df_f.drop(columns=["Expediente"]).style.map(
+styled = df_f.style.map(
     lambda v: estado_badge(v) if v in ESTADO_COLOR else "", subset=["Estado"]
 )
 st.dataframe(styled, use_container_width=True, hide_index=True)
