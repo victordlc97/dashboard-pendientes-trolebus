@@ -10,14 +10,23 @@ COLOR_YELLOW  = "#ECD635"
 
 st.markdown(f"""
 <style>
-    /* Fondo general */
-    .stApp {{ background-color: #f4f6f9; }}
+    /* Fondo general y color de fuente base */
+    .stApp {{
+        background-color: #f4f6f9;
+        color: {COLOR_PRIMARY} !important;
+    }}
 
-    /* Título principal */
-    h1 {{ color: {COLOR_PRIMARY} !important; letter-spacing: -0.5px; }}
+    /* Todo el texto del cuerpo principal */
+    .stApp p, .stApp span, .stApp div, .stApp label,
+    .stApp li, .stApp td, .stApp th {{
+        color: {COLOR_PRIMARY} !important;
+    }}
 
-    /* Subtítulos */
-    h2, h3 {{ color: {COLOR_PRIMARY} !important; }}
+    /* Títulos */
+    h1, h2, h3, h4, h5, h6 {{
+        color: {COLOR_PRIMARY} !important;
+        letter-spacing: -0.3px;
+    }}
 
     /* Sidebar */
     [data-testid="stSidebar"] {{
@@ -41,11 +50,13 @@ st.markdown(f"""
     [data-testid="stMetricLabel"] {{ color: {COLOR_PRIMARY} !important; font-weight: 600; }}
     [data-testid="stMetricValue"] {{ color: {COLOR_PRIMARY} !important; }}
 
+    /* Caption */
+    [data-testid="stCaptionContainer"] p {{
+        color: #444 !important;
+    }}
+
     /* Divisor */
     hr {{ border-color: {COLOR_ACCENT}; opacity: 0.4; }}
-
-    /* Caption */
-    .stCaption {{ color: #555 !important; }}
 </style>
 """, unsafe_allow_html=True)
 
