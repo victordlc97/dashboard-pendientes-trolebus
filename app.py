@@ -228,6 +228,57 @@ fig_comp.update_layout(
 st.plotly_chart(fig_comp, use_container_width=True)
 
 st.divider()
+st.subheader("Avance por responsable")
+
+resp = df_f.groupby(["Responsable", "Estado"]).size().reset_index(name="Cantidad")
+fig_resp = go.Figure()
+for estado in ESTADO_ORDER:
+    sub = resp[resp["Estado"] == estado]
+    fig_resp.add_bar(
+        y=sub["Responsable"],
+        x=sub["Cantidad"],
+        name=estado,
+        orientation="h",
+        marker_color=ESTADO_COLOR[estado],
+        marker_line_color=COLOR_PRIMARY,
+        marker_line_width=0.8,
+    )
+fig_resp.update_layout(
+    barmode="stack",
+    height=max(280, len(df_f["Responsable"].unique()) * 50),
+    margin=dict(l=20, r=20, t=20, b=10),
+    paper_bgcolor="white",
+    plot_bgcolor="white",
+    font=dict(color=COLOR_PRIMARY),
+    xaxis=dict(gridcolor="#e8edf5", title="Cantidad de temas"),
+    yaxis=dict(gridcolor="#e8edf5", automargin=True),
+    legend_title="Estado",
+)
+st.plotly_chart(fig_resp, use_container_width=True)
+
+st.divider()
+st.subheader("Seguimiento por Gantt")
+st.markdown(f"""
+<div style="background:white; border:2px dashed {COLOR_ACCENT}; border-radius:10px;
+            padding:32px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+    <div style="font-size:2.2rem; margin-bottom:12px;">📅</div>
+    <p style="color:{COLOR_PRIMARY}; font-size:1.1rem; font-weight:700; margin:0 0 8px 0;">
+        Diagrama de Gantt no disponible
+    </p>
+    <p style="color:#555; font-size:0.95rem; margin:0 0 20px 0; max-width:500px; margin-left:auto; margin-right:auto;">
+        Para activar el seguimiento por Gantt se requiere definir, por cada tema,
+        una <strong>fecha de inicio</strong> y una <strong>fecha límite de resolución</strong>.
+        Estas fechas aún no están registradas — se recomienda definirlas a la brevedad
+        como parte del control de avance.
+    </p>
+    <div style="display:inline-block; background:{COLOR_PRIMARY}; color:white;
+                padding:8px 24px; border-radius:6px; font-weight:600; font-size:0.9rem;">
+        ⚠️ Acción requerida: solicitar fechas a los responsables
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+st.divider()
 st.subheader("Detalle de temas")
 
 COLS = ["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción"]
