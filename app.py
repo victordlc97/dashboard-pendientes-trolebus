@@ -295,36 +295,65 @@ st.divider()
 st.subheader("Detalle de temas")
 
 COLS = ["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción"]
+FILTER_COLS = ["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado"]
 
-header_cells = "".join(
-    f'<th style="padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap; color:white !important;">{c}</th>'
-    for c in COLS
-)
+with st.expander("🔎 Filtros de la tabla (estilo Excel)", expanded=False):
+    busqueda = st.text_input(
+        "Búsqueda libre",
+        placeholder="Cualquier texto: responsable, tema, palabra de la descripción…",
+    )
+    fcols = st.columns(3)
+    seleccion = {}
+    for idx, col in enumerate(FILTER_COLS):
+        with fcols[idx % 3]:
+            opciones = sorted(df_f[col].dropna().astype(str).unique())
+            seleccion[col] = st.multiselect(col, opciones, key=f"tf_{col}")
 
-rows_html = ""
-for i, (_, row) in enumerate(df_f[COLS].iterrows()):
-    bg = "white" if i % 2 == 0 else "#f4f6f9"
-    cells = ""
-    for col in COLS:
-        val = str(row[col]) if row[col] else ""
-        if col == "Estado":
-            color = ESTADO_COLOR.get(val, "#ccc")
-            text_color = COLOR_PRIMARY if val == "En curso" else "white"
-            cells += (
-                f'<td style="padding:10px 14px; white-space:nowrap;">'
-                f'<span style="background:{color}; color:{text_color}; padding:3px 10px; '
-                f'border-radius:4px; font-weight:600;">{val}</span></td>'
-            )
-        elif col == "Descripción":
-            cells += (
-                f'<td style="padding:10px 14px; min-width:280px; '
-                f'word-wrap:break-word; white-space:normal;">{val}</td>'
-            )
-        else:
-            cells += f'<td style="padding:10px 14px; white-space:nowrap;">{val}</td>'
-    rows_html += f'<tr style="background:{bg}; border-bottom:1px solid #e8edf5;">{cells}</tr>'
+tabla_df = df_f.copy()
+for col, valores in seleccion.items():
+    if valores:
+        tabla_df = tabla_df[tabla_df[col].astype(str).isin(valores)]
 
-st.markdown(f"""
+if busqueda:
+    q = busqueda.lower()
+    tabla_df = tabla_df[
+        tabla_df.apply(lambda r: q in " ".join(str(v) for v in r.values).lower(), axis=1)
+    ]
+
+st.caption(f"Mostrando {len(tabla_df)} de {len(df_f)} temas")
+
+if tabla_df.empty:
+    st.info("Ningún tema coincide con los filtros aplicados.")
+else:
+    header_cells = "".join(
+        f'<th style="padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap; color:white !important;">{c}</th>'
+        for c in COLS
+    )
+
+    rows_html = ""
+    for i, (_, row) in enumerate(tabla_df[COLS].iterrows()):
+        bg = "white" if i % 2 == 0 else "#f4f6f9"
+        cells = ""
+        for col in COLS:
+            val = str(row[col]) if row[col] else ""
+            if col == "Estado":
+                color = ESTADO_COLOR.get(val, "#ccc")
+                text_color = COLOR_PRIMARY if val == "En curso" else "white"
+                cells += (
+                    f'<td style="padding:10px 14px; white-space:nowrap;">'
+                    f'<span style="background:{color}; color:{text_color}; padding:3px 10px; '
+                    f'border-radius:4px; font-weight:600;">{val}</span></td>'
+                )
+            elif col == "Descripción":
+                cells += (
+                    f'<td style="padding:10px 14px; min-width:280px; '
+                    f'word-wrap:break-word; white-space:normal;">{val}</td>'
+                )
+            else:
+                cells += f'<td style="padding:10px 14px; white-space:nowrap;">{val}</td>'
+        rows_html += f'<tr style="background:{bg}; border-bottom:1px solid #e8edf5;">{cells}</tr>'
+
+    st.markdown(f"""
 <div style="overflow-x:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 <table style="width:100%; border-collapse:collapse; font-size:0.88rem; color:{COLOR_PRIMARY};">
     <thead>
