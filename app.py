@@ -292,6 +292,7 @@ else:
         return "Próximo"
 
     gantt_df["Estado fecha"] = gantt_df["Fecha límite"].apply(estado_fecha)
+    gantt_df["Tema (Responsable)"] = gantt_df["Tema"] + "  —  " + gantt_df["Responsable"]
     ESTADO_FECHA_COLOR = {"Vencido": COLOR_PRIMARY, "Vence hoy": COLOR_YELLOW, "Próximo": COLOR_ACCENT}
     ESTADO_FECHA_ORDER = ["Vencido", "Vence hoy", "Próximo"]
 
@@ -299,13 +300,13 @@ else:
         gantt_df,
         x_start="Inicio",
         x_end="Fecha límite",
-        y="Tema",
+        y="Tema (Responsable)",
         color="Estado fecha",
         category_orders={"Estado fecha": ESTADO_FECHA_ORDER},
         color_discrete_map=ESTADO_FECHA_COLOR,
         hover_data=["Responsable", "Contrato"],
     )
-    fig_gantt.update_yaxes(autorange="reversed", title=None)
+    fig_gantt.update_yaxes(autorange="reversed", title=None, automargin=True)
     fig_gantt.add_vline(x=FECHA_HOY, line_dash="dash", line_color=COLOR_PRIMARY)
     fig_gantt.add_annotation(
         x=FECHA_HOY, y=1.06, yref="paper", showarrow=False,
