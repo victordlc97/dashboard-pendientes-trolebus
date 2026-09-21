@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -67,39 +68,39 @@ CONTRAPARTE = "SITRAMYTEM"
 
 DATA = [
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "José Antonio (CUPISA)/ INDIMA", "Planos as-built", "Documentación", "En curso",
-     "Actualizar los planos con las correcciones emitidas por INDIMA; falta la firma de Supervisión y definir la fecha de entrega."),
+     "Actualizar los planos con las correcciones emitidas por INDIMA; falta la firma de Supervisión y definir la fecha de entrega.", "2026-09-14"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "José Antonio (CUPISA)", "Dossier de Calidad", "Documentación", "En curso",
-     "Cupisa esta actualizando información, Supervisión tiene la gran mayoría. Entrega programada para el día 21 de septiembre."),
+     "Cupisa esta actualizando información, Supervisión tiene la gran mayoría. Entrega programada para el día 21 de septiembre.", "2026-09-21"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "CUPISA", "Bitácora de obra", "Documentación", "Pendiente",
-     "Continuar el registro, detenido desde 2024. IMPORTANTE: pendiente la firma del Ing. Mauricio y de Supervisión."),
+     "Continuar el registro, detenido desde 2024. IMPORTANTE: pendiente la firma del Ing. Mauricio y de Supervisión.", "2026-09-22"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "SITRAMYTEM/MGMG", "Documentos de Terminación Anticipada", "Administrativo", "En curso",
-     "Elaborar la documentación para dar paso al cierre correspondiente."),
+     "Elaborar la documentación para dar paso al cierre correspondiente.", "2026-09-15"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "SITRAMYTEM/MGMG", "Revisión del Expediente Único de Obra", "Administrativo", "En curso",
-     "Revisar qué cuestiones administrativas siguen abiertas."),
+     "Revisar qué cuestiones administrativas siguen abiertas.", "2026-09-22"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "SITRAMYTEM", "Retroalimentación de GNR", "Coordinación", "Pendiente",
-     "Está en espera de respuesta por parte de SITRAMYTEM; se presentó hace menos de un mes."),
+     "Está en espera de respuesta por parte de SITRAMYTEM; se presentó hace menos de un mes.", "2026-09-22"),
     ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "CUPISA", "Displays", "Coordinación", "Pendiente",
-     "Coordinar con el proveedor, por parte de CUPISA, la instalación en las subestaciones."),
-    ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "CUPISA", "Estimación Finiquito", "Documentación", "Pendiente", ""),
+     "Coordinar con el proveedor, por parte de CUPISA, la instalación en las subestaciones.", "2026-09-22"),
+    ("Contrato 1", "LP-SITRAMYTEM-DPPC-PAD-02-2023", "CUPISA", "Estimación Finiquito", "Documentación", "Pendiente", "", "2026-09-22"),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "José Antonio (CUPISA)", "Planos as-built", "Documentación", "En curso",
-     "Actualizar los planos con el estado real de la obra; falta la firma de Supervisión y definir la fecha de entrega."),
-    ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "José Antonio (CUPISA)", "Dossier de Calidad", "Documentación", "Pendiente", ""),
+     "Actualizar los planos con el estado real de la obra; falta la firma de Supervisión y definir la fecha de entrega.", None),
+    ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "José Antonio (CUPISA)", "Dossier de Calidad", "Documentación", "Pendiente", "", None),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "MGMG/CUPISA", "Bitácora de obra", "Documentación", "Pendiente",
-     "Iniciar el registro desde cero debido al extravío por parte de SITRAMYTEM. IMPORTANTE: pendiente la firma del Ing. Mauricio y de Supervisión."),
+     "Iniciar el registro desde cero debido al extravío por parte de SITRAMYTEM. IMPORTANTE: pendiente la firma del Ing. Mauricio y de Supervisión.", None),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "SITRAMYTEM/MGMG", "Actas administrativas de cierre", "Administrativo", "Pendiente",
-     "Integrar la documentación para el cierre del contrato."),
+     "Integrar la documentación para el cierre del contrato.", None),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "SITRAMYTEM/MGMG", "Revisión del Expediente Único de Obra", "Administrativo", "Pendiente",
-     "Revisar qué cuestiones administrativas siguen abiertas."),
+     "Revisar qué cuestiones administrativas siguen abiertas.", None),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "SITRAMYTEM", "Retroalimentación de GNR", "Coordinación", "Pendiente",
-     "Está en espera de respuesta por parte de SITRAMYTEM; se presentó hace menos de un mes."),
+     "Está en espera de respuesta por parte de SITRAMYTEM; se presentó hace menos de un mes.", None),
     ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "INDIMA/CUPISA", "Precios extraordinarios", "Financiero", "En curso",
-     "Cotizaciones pendientes por parte de CUPISA; dictámenes en curso. Preparar y presentar para el reconocimiento de costos."),
-    ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "CUPISA", "Estimación Finiquito", "Documentación", "Pendiente", ""),
+     "Cotizaciones pendientes por parte de CUPISA; dictámenes en curso. Preparar y presentar para el reconocimiento de costos.", None),
+    ("Contrato 2", "LP-SITRAMYTEM-DPPC-PAD-06-2024", "CUPISA", "Estimación Finiquito", "Documentación", "Pendiente", "", None),
 ]
 
 df = pd.DataFrame(
     DATA,
-    columns=["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción"],
+    columns=["Contrato", "Expediente", "Responsable", "Tema", "Categoría", "Estado", "Descripción", "Fecha límite"],
 )
 
 ESTADO_ORDER = ["En curso", "Pendiente"]
@@ -271,25 +272,59 @@ st.plotly_chart(fig_resp, use_container_width=True)
 
 st.divider()
 st.subheader("Seguimiento por Gantt")
-st.markdown(f"""
-<div style="background:white; border:2px dashed {COLOR_ACCENT}; border-radius:10px;
-            padding:32px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-    <div style="font-size:2.2rem; margin-bottom:12px;">📅</div>
-    <p style="color:{COLOR_PRIMARY} !important; font-size:1.1rem; font-weight:700; margin:0 0 8px 0;">
-        Diagrama de Gantt no disponible
-    </p>
-    <p style="color:#777 !important; font-size:0.95rem; margin:0 0 20px 0; max-width:500px; margin-left:auto; margin-right:auto;">
-        Para activar el seguimiento por Gantt se requiere definir, por cada tema,
-        una <strong>fecha de inicio</strong> y una <strong>fecha límite de resolución</strong>.
-        Estas fechas aún no están registradas — se recomienda definirlas a la brevedad
-        como parte del control de avance.
-    </p>
-    <div style="display:inline-block; background:{COLOR_PRIMARY}; color:white !important;
-                padding:8px 24px; border-radius:6px; font-weight:600 !important; font-size:0.9rem;">
-        <span style="color:white !important;">⚠️ Acción requerida: solicitar fechas a los responsables</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+
+FECHA_HOY = pd.Timestamp("2026-09-21")
+FECHA_INICIO_GANTT = pd.Timestamp("2026-09-08")
+
+gantt_df = df_f[df_f["Fecha límite"].notna()].copy()
+
+if gantt_df.empty:
+    st.info("No hay temas con fecha definida para los filtros actuales.")
+else:
+    gantt_df["Fecha límite"] = pd.to_datetime(gantt_df["Fecha límite"])
+    gantt_df["Inicio"] = FECHA_INICIO_GANTT
+
+    def estado_fecha(fecha):
+        if fecha < FECHA_HOY:
+            return "Vencido"
+        if fecha == FECHA_HOY:
+            return "Vence hoy"
+        return "Próximo"
+
+    gantt_df["Estado fecha"] = gantt_df["Fecha límite"].apply(estado_fecha)
+    ESTADO_FECHA_COLOR = {"Vencido": COLOR_PRIMARY, "Vence hoy": COLOR_YELLOW, "Próximo": COLOR_ACCENT}
+    ESTADO_FECHA_ORDER = ["Vencido", "Vence hoy", "Próximo"]
+
+    fig_gantt = px.timeline(
+        gantt_df,
+        x_start="Inicio",
+        x_end="Fecha límite",
+        y="Tema",
+        color="Estado fecha",
+        category_orders={"Estado fecha": ESTADO_FECHA_ORDER},
+        color_discrete_map=ESTADO_FECHA_COLOR,
+        hover_data=["Responsable", "Contrato"],
+    )
+    fig_gantt.update_yaxes(autorange="reversed", title=None)
+    fig_gantt.add_vline(x=FECHA_HOY, line_dash="dash", line_color=COLOR_PRIMARY)
+    fig_gantt.add_annotation(
+        x=FECHA_HOY, y=1.06, yref="paper", showarrow=False,
+        text="Hoy", font=dict(color=COLOR_PRIMARY, size=12),
+    )
+    fig_gantt.update_layout(
+        height=max(280, len(gantt_df) * 45),
+        margin=dict(l=20, r=20, t=40, b=10),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font=dict(color=COLOR_PRIMARY),
+        xaxis=dict(gridcolor="#e8edf5", title="Fecha"),
+        legend_title="Estado de fecha",
+    )
+    st.plotly_chart(fig_gantt, use_container_width=True)
+
+    faltan = int(df_f["Fecha límite"].isna().sum())
+    if faltan:
+        st.caption(f"📌 {faltan} tema(s) del Contrato 2 todavía no tienen fecha definida — se sumarán al Gantt cuando estén disponibles.")
 
 st.divider()
 st.subheader("Detalle de temas")
