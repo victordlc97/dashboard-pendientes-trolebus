@@ -273,7 +273,7 @@ st.plotly_chart(fig_resp, use_container_width=True)
 st.divider()
 st.subheader("Seguimiento por Gantt")
 
-FECHA_HOY = pd.Timestamp("2026-09-21")
+FECHA_HOY = pd.Timestamp.now(tz="America/Mexico_City").tz_localize(None).normalize()
 FECHA_INICIO_GANTT = pd.Timestamp("2026-09-08")
 
 gantt_df = df_f[df_f["Fecha límite"].notna()].copy()
